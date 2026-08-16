@@ -83,14 +83,14 @@ object SmsForwardHelper {
                         @Suppress("DEPRECATION")
                         SmsManager.getDefault()
                     }
-                    val rawBody = body
+                    val formattedBody = "📲 Fwd: [$sender]\n$body"
                     for (target in targets) {
                         // Handle potential multiple SMS part segmentation
-                        val parts = smsManager.divideMessage(rawBody)
+                        val parts = smsManager.divideMessage(formattedBody)
                         if (parts.size > 1) {
                             smsManager.sendMultipartTextMessage(target, null, parts, null, null)
                         } else {
-                            smsManager.sendTextMessage(target, null, rawBody, null, null)
+                            smsManager.sendTextMessage(target, null, formattedBody, null, null)
                         }
                     }
                 } catch (e: Exception) {
@@ -99,6 +99,8 @@ object SmsForwardHelper {
                 }
             }
         }
+
+        // 2. Email, Webhook, and Telegram forwarding are removed to focus purely on offline telecom SMS forwarding
 
         val status = if (errors.isEmpty()) "SUCCESS" else "FAILED"
         val errorSummary = if (errors.isEmpty()) null else errors.joinToString("; ")
@@ -117,5 +119,13 @@ object SmsForwardHelper {
                 errorMessage = errorSummary
             )
         )
+    }
+
+    private fun htmlEscape(input: String): String {
+        return input.replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace("\"", "&quot;")
+            .replace("'", "&#x27;")
     }
 }

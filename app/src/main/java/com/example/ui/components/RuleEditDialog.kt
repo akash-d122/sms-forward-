@@ -262,7 +262,7 @@ fun RuleEditDialog(
                                     label = { Text("Maturity / OTP Template") },
                                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = otpDropdownExpanded) },
                                     colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                                    modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                                    modifier = Modifier.fillMaxWidth().menuAnchor()
                                 )
                                 ExposedDropdownMenu(
                                     expanded = otpDropdownExpanded,
